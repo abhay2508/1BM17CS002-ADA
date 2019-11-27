@@ -1,44 +1,37 @@
-#include<bits/stdc++.h>
-using namespace std;
-int V[100][100],n;
+#include<stdio.h> 
+  
 
-int knapsack(int w[],int v[], int W)
-{
-	for(int i=0;i<=n;i++)
-		V[i][0]=0;
-	for(int i=1;i<=W;i++)
-		V[0][i]=0;
-	for(int i=1;i<=n;i++)
-	{
-		for(int j=1;j<=W;j++)
-		{
-			if(j-w[i]>=0)
-			{
-				V[i][j]=max(V[i-1][j],v[i] + V[i-1][j-w[i]]);
-			}
-			else{
-				V[i][j]=V[i-1][j];
-			}
-		}
-	}
-	return V[n][W];
-}
+int max(int a, int b) { return (a > b)? a : b; } 
+  
 
-int main()
-{
-	cout<<"Enter number of elements:";
-	cin>>n;
-	int w[n], v[n], W;
-	cout<<"Enter weights:";
-	for(int i=1;i<=n;i++)
-		cin>>w[i];
-	cout<<"Enter the  values:";
-	for(int i=1;i<=n;i++)
-		cin>>v[i];
-	cout<<"Enterthe  capacity:";
-	cin>>W;
-	int value=knapsack(w,v,W);
+int knapSack(int W, int wt[], int val[], int n) 
+{ 
+   int i, w; 
+   int K[n+1][W+1]; 
+  
 
-	cout<<"value:"<<value<<endl;
-	return 0;
-}
+   for (i = 0; i <= n; i++) 
+   { 
+       for (w = 0; w <= W; w++) 
+       { 
+           if (i==0 || w==0) 
+               K[i][w] = 0; 
+           else if (wt[i-1] <= w) 
+                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]); 
+           else
+                 K[i][w] = K[i-1][w]; 
+       } 
+   } 
+  
+   return K[n][W]; 
+} 
+  
+int main() 
+{ 
+    int val[] = {60, 100, 120}; 
+    int wt[] = {10, 20, 30}; 
+    int  W = 50; 
+    int n = sizeof(val)/sizeof(val[0]); 
+    printf("%d", knapSack(W, wt, val, n)); 
+    return 0; 
+} 
